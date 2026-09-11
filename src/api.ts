@@ -17,9 +17,6 @@ export interface CharterDecisionRequest {
   earliest_date: string;
   latest_date: string;
   risk_appetite: 'LOW' | 'MEDIUM' | 'HIGH';
-  custom_bunker_price?: number;
-  custom_freight_rate?: number;
-  custom_congestion_days?: number;
 }
 
 export interface MarketAnalysis {

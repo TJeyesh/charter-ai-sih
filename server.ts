@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createServer as createViteServer } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -150,19 +151,16 @@ app.post(['/api/v1/recommend/decision', '/api/v1/recommend'], (req: Request, res
     earliest_date = new Date().toISOString().split('T')[0],
     latest_date = new Date(Date.now() + 25 * 86400000).toISOString().split('T')[0],
     risk_appetite = 'MEDIUM',
-    custom_bunker_price,
-    custom_freight_rate,
-    custom_congestion_days,
   } = req.body || {};
 
   const distance = getDistance(origin_port_id, destination_port_id);
   const destPort = PORT_DATABASE[destination_port_id] || { name: destination_port_id, max_draft_m: 16.0, max_loa_m: 260, max_beam_m: 40, rate_tpd: 35000, berths: 6 };
   const origPort = PORT_DATABASE[origin_port_id] || { name: origin_port_id, max_draft_m: 18.0, max_loa_m: 300, max_beam_m: 45, rate_tpd: 40000, berths: 8 };
 
-  const currentRate = custom_freight_rate ?? 17.89;
-  const forecastRate = custom_freight_rate ? custom_freight_rate + 0.36 : 18.25;
-  const fuelPricePerTonne = custom_bunker_price ?? 650.0;
-  const predictedWaitDays = custom_congestion_days ?? 2.6;
+  const currentRate = 17.89;
+  const forecastRate = 18.25;
+  const fuelPricePerTonne = 650.0;
+  const predictedWaitDays = 2.6;
 
   // Evaluate candidate vessel classes
   const evaluatedPlans = VESSEL_SPECS.map((vessel, index) => {
@@ -553,7 +551,6 @@ app.get('/api/v1/vessels', (req: Request, res: Response) => {
 
 async function start() {
   if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true, host: '0.0.0.0', port: PORT },
       appType: 'spa',
@@ -572,12 +569,7 @@ async function start() {
   });
 }
 
-// Export the Express app for Vercel Serverless
-export default app;
-
-if (!process.env.VERCEL) {
-  start().catch(err => {
-    console.error('Failed to start server:', err);
-    process.exit(1);
-  });
-}
+start().catch(err => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
+});
