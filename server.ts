@@ -557,19 +557,29 @@ async function start() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*all', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    // In production (Vercel), we don't need to serve static files through Express
+    // Vercel will handle serving the static frontend files based on vercel.json.
+    // We only serve static files if not on Vercel.
+    if (!process.env.VERCEL) {
+      const distPath = path.join(process.cwd(), 'dist');
+      app.use(express.static(distPath));
+      app.get('*all', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+    }
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`DockInsights Server listening on http://0.0.0.0:${PORT}`);
-  });
+  // Only listen on a port if we are NOT in a Vercel serverless environment
+  if (!process.env.VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`DockInsights Server listening on http://0.0.0.0:${PORT}`);
+    });
+  }
 }
 
 start().catch(err => {
   console.error('Failed to start server:', err);
   process.exit(1);
 });
+
+export default app;
