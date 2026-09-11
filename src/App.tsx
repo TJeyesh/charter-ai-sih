@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react
 import { getHealth } from './api';
 
 const VoyagePlanner = lazy(() => import('./pages/VoyagePlanner'));
+import sihLogo from './assets/SIH2026-logo.png';
 
 // Layout Component
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -57,6 +58,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             {navItems.find(item => item.path === location.pathname)?.name || 'DockInsights'}
           </div>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', color: 'var(--text-secondary)' }}>
+            <img src={sihLogo} alt="SIH 2026 Logo" style={{ height: '32px' }} />
             <div style={{ width: 32, height: 32, borderRadius: '50%', backgroundColor: 'var(--accent-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
               JD
             </div>
