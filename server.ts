@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createServer as createViteServer } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -550,7 +549,8 @@ app.get('/api/v1/vessels', (req: Request, res: Response) => {
 // =============================================================================
 
 async function start() {
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true, host: '0.0.0.0', port: PORT },
       appType: 'spa',
@@ -577,9 +577,11 @@ async function start() {
   }
 }
 
-start().catch(err => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
+if (!process.env.VERCEL) {
+  start().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  });
+}
 
 export default app;
