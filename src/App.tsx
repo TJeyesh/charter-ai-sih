@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Ship, AlertTriangle, LayoutDashboard } from 'lucide-react';
+import { useState, useEffect, Suspense, lazy } from 'react';
+import { Ship, AlertTriangle, LayoutDashboard, Loader2 } from 'lucide-react';
 import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import VoyagePlanner from './pages/VoyagePlanner';
 import { getHealth } from './api';
+
+const VoyagePlanner = lazy(() => import('./pages/VoyagePlanner'));
 
 // Layout Component
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -82,7 +83,11 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<VoyagePlanner />} />
+          <Route path="/" element={
+            <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}><Loader2 className="spinner" /></div>}>
+              <VoyagePlanner />
+            </Suspense>
+          } />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
