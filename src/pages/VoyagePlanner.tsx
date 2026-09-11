@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Ship, Package, Loader2, AlertCircle, 
-  TrendingUp, Activity, DollarSign, ShieldAlert, FileText, CheckCircle2, 
+  TrendingUp, Activity, DollarSign, ShieldAlert, CheckCircle2, 
   XCircle, BrainCircuit, Clock, HelpCircle,
   Sliders, Calendar, Compass, BarChart3, RefreshCw
 } from 'lucide-react';
@@ -86,7 +86,7 @@ export default function VoyagePlanner() {
       if (err.response?.data?.detail) {
         setError(typeof err.response.data.detail === 'string' ? err.response.data.detail : JSON.stringify(err.response.data.detail));
       } else {
-        setError(err.message || 'An unexpected error occurred while communicating with the CharterAI intelligence engine.');
+        setError(err.message || 'An unexpected error occurred while communicating with the DockInsights intelligence engine.');
       }
     } finally {
       setLoading(false);
@@ -222,7 +222,7 @@ export default function VoyagePlanner() {
         <div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Compass size={28} color="var(--accent-primary)" />
-            CharterAI V2 Decision Dashboard
+            DockInsights Decision Dashboard
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
             Multi-voyage fleet optimization, probabilistic risk modeling, and market timing engine
@@ -251,7 +251,7 @@ export default function VoyagePlanner() {
         <div className="card-header">
           <h2 className="card-title">
             <Package size={20} color="var(--accent-primary)" />
-            1. Charter Request Parameters
+            Charter Request Parameters
           </h2>
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Commercial & Operational Corridor Constraints</span>
         </div>
@@ -338,7 +338,7 @@ export default function VoyagePlanner() {
 
             <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end' }}>
               <button type="submit" className="btn btn-primary" style={{ width: '100%', height: '42px' }} disabled={loading}>
-                {loading ? <><Loader2 className="spinner" size={18} /> Optimizing Fleet...</> : <><Activity size={18} /> Run CharterAI Engine</>}
+                {loading ? <><Loader2 className="spinner" size={18} /> Optimizing Fleet...</> : <><Activity size={18} /> Run DockInsights Engine</>}
               </button>
             </div>
           </div>
@@ -376,7 +376,7 @@ export default function VoyagePlanner() {
             <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}>No Active Charter Optimization</h3>
             <p style={{ maxWidth: '600px', margin: '0.5rem auto 0 auto', fontSize: '0.9rem' }}>
               Select your origin, destination, cargo volume, and delivery window above, then click 
-              <strong> Run CharterAI Engine</strong> to evaluate freight rates, fleet allocation, and market timing.
+              <strong> Run DockInsights Engine</strong> to evaluate freight rates, fleet allocation, and market timing.
             </p>
           </div>
           <button 
@@ -401,7 +401,7 @@ export default function VoyagePlanner() {
             <div className="card-header">
               <h2 className="card-title">
                 <TrendingUp size={20} color="var(--accent-primary)" />
-                2. Market Intelligence & Probabilistic Freight Forecast
+                Market Intelligence & Freight Forecast
               </h2>
               <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 Model: <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{result.freight_forecast?.model_used || 'Multi-Model Ensemble'}</span>
@@ -544,7 +544,7 @@ export default function VoyagePlanner() {
             <div className="card-header">
               <h2 className="card-title">
                 <Clock size={20} color="var(--accent-primary)" />
-                3. Market Timing Recommendation
+                Market Timing Recommendation
               </h2>
               <div>{renderTimingBadge(result.market_timing?.recommendation || 'MONITOR')}</div>
             </div>
@@ -605,7 +605,7 @@ export default function VoyagePlanner() {
                 </span>
                 <h2 className="card-title" style={{ fontSize: '1.4rem' }}>
                   <Ship size={22} color="var(--accent-primary)" />
-                  5. Recommended Plan: {result.recommended_plan?.vessel_count || 1} × {result.recommended_plan?.vessel_class} ({result.recommended_plan?.voyages || 1} Voyage)
+                  Recommended Plan: {result.recommended_plan?.vessel_count || 1} × {result.recommended_plan?.vessel_class} ({result.recommended_plan?.voyages || 1} Voyage)
                 </h2>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -661,7 +661,7 @@ export default function VoyagePlanner() {
             <div className="card-header">
               <h2 className="card-title">
                 <BarChart3 size={20} color="var(--accent-primary)" />
-                4. Vessel Plan Comparison Table
+                Vessel Plan Comparison Table
               </h2>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 Comparing {allPlans.length} Feasible Multi-Voyage & Fleet Combinations
@@ -746,7 +746,7 @@ export default function VoyagePlanner() {
             <div className="card-header">
               <h2 className="card-title">
                 <DollarSign size={20} color="var(--accent-primary)" />
-                6. Realistic Voyage Economics & Cost Breakdown
+                Voyage Economics & Cost Breakdown
               </h2>
               <div style={{ fontSize: '0.9rem', color: 'var(--accent-secondary)', fontWeight: 600 }}>
                 Total Delivered Cost: ${Math.round(result.economics?.total_cost || result.recommended_plan?.total_cost || 0).toLocaleString()}
@@ -816,7 +816,7 @@ export default function VoyagePlanner() {
             <div className="card-header">
               <h2 className="card-title">
                 <ShieldAlert size={20} color="var(--accent-primary)" />
-                7. Maritime Risk Center & 8-Category Audit
+                Maritime Risk Center
               </h2>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Composite Score:</span>
@@ -868,165 +868,18 @@ export default function VoyagePlanner() {
             </div>
           </div>
 
-          {/* =====================================================================
-              SECTION 8: SCENARIO ANALYSIS
-              ===================================================================== */}
-          <div className="card" id="scenario-analysis-section">
-            <div className="card-header">
-              <h2 className="card-title">
-                <Compass size={20} color="var(--accent-primary)" />
-                8. Scenario Stress Tests & Probabilistic Monte Carlo Quantiles
-              </h2>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>10,000 Stochastic Iterations</span>
-            </div>
 
-            {/* Deterministic Scenarios: Best, Base, Worst */}
-            <div className="grid-3" style={{ marginBottom: '1.5rem' }}>
-              {/* Best Case */}
-              <div className="scenario-card best">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ fontWeight: 700, color: 'var(--accent-success)' }}>BEST CASE</h4>
-                  <span className="badge badge-low">Optimistic</span>
-                </div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                  ${Math.round(result.scenario_analysis?.BEST_CASE?.total_cost || result.monte_carlo?.p10_cost || 0).toLocaleString()}
-                </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  Cost / Tonne: <strong>${(result.scenario_analysis?.BEST_CASE?.cost_per_tonne || result.monte_carlo?.p10_cpt || 0).toFixed(2)}</strong>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-color-light)', paddingTop: '0.5rem' }}>
-                  {result.scenario_analysis?.BEST_CASE?.assumptions?.[0] || 'Zero anchorage waiting, smooth weather speed'}
-                </div>
-              </div>
 
-              {/* Base Case */}
-              <div className="scenario-card base">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ fontWeight: 700, color: 'var(--accent-secondary)' }}>BASE CASE</h4>
-                  <span className="badge badge-mod">Expected</span>
-                </div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                  ${Math.round(result.scenario_analysis?.BASE_CASE?.total_cost || result.monte_carlo?.p50_cost || 0).toLocaleString()}
-                </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  Cost / Tonne: <strong>${(result.scenario_analysis?.BASE_CASE?.cost_per_tonne || result.monte_carlo?.p50_cpt || 0).toFixed(2)}</strong>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-color-light)', paddingTop: '0.5rem' }}>
-                  {result.scenario_analysis?.BASE_CASE?.assumptions?.[0] || 'Median congestion, normal bunker consumption'}
-                </div>
-              </div>
 
-              {/* Worst Case */}
-              <div className="scenario-card worst">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ fontWeight: 700, color: 'var(--accent-danger)' }}>WORST CASE</h4>
-                  <span className="badge badge-high">Stress Test</span>
-                </div>
-                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                  ${Math.round(result.scenario_analysis?.WORST_CASE?.total_cost || result.monte_carlo?.p90_cost || 0).toLocaleString()}
-                </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  Cost / Tonne: <strong>${(result.scenario_analysis?.WORST_CASE?.cost_per_tonne || result.monte_carlo?.p90_cpt || 0).toFixed(2)}</strong>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-color-light)', paddingTop: '0.5rem' }}>
-                  {result.scenario_analysis?.WORST_CASE?.assumptions?.[0] || 'Heavy port bottleneck, bunker price spike'}
-                </div>
-              </div>
-            </div>
-
-            {/* Monte Carlo Statistical Quantiles: P10, P50, P90 */}
-            <div style={{ backgroundColor: 'var(--bg-tertiary)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color-light)' }}>
-              <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-                Statistical Distribution Quantiles (Monte Carlo Simulation)
-              </div>
-              <div className="grid-3">
-                <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>P10 (10th Percentile)</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#48BB78' }}>
-                    ${Math.round(result.monte_carlo?.p10_cost || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>${result.monte_carlo?.p10_cpt?.toFixed(2)} /MT</div>
-                </div>
-
-                <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>P50 (Median Expectation)</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-secondary)' }}>
-                    ${Math.round(result.monte_carlo?.p50_cost || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>${result.monte_carlo?.p50_cpt?.toFixed(2)} /MT</div>
-                </div>
-
-                <div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>P90 (90th Percentile Risk)</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#F56565' }}>
-                    ${Math.round(result.monte_carlo?.p90_cost || 0).toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>${result.monte_carlo?.p90_cpt?.toFixed(2)} /MT</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* =====================================================================
-              SECTION 9: CONTRACT STRATEGY
-              ===================================================================== */}
-          <div className="card" id="contract-strategy-section">
-            <div className="card-header">
-              <h2 className="card-title">
-                <FileText size={20} color="var(--accent-primary)" />
-                9. Risk-Aware Contract Portfolio Strategy
-              </h2>
-              <span className="badge" style={{ backgroundColor: 'rgba(128, 90, 213, 0.2)', color: '#B794F4' }}>
-                {result.contract_strategy?.recommended_strategy}
-              </span>
-            </div>
-
-            <div className="grid-3" style={{ marginBottom: '1.25rem' }}>
-              <div className="stat-box">
-                <div className="stat-label">Spot Allocation</div>
-                <div className="stat-value">{result.contract_strategy?.spot_percentage}%</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Prompt voyage fixture</div>
-              </div>
-
-              <div className="stat-box">
-                <div className="stat-label">Short-Term Contract</div>
-                <div className="stat-value">{result.contract_strategy?.short_term_percentage}%</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>3-6 month index hedge</div>
-              </div>
-
-              <div className="stat-box">
-                <div className="stat-label">Medium-Term Contract</div>
-                <div className="stat-value">{result.contract_strategy?.medium_term_percentage}%</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>12+ month COA / time charter</div>
-              </div>
-            </div>
-
-            {/* Strategic Rationale */}
-            <div style={{ backgroundColor: 'var(--bg-tertiary)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color-light)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
-                <span>Expected Portfolio Cost: <strong>${Math.round(result.contract_strategy?.expected_cost || 0).toLocaleString()}</strong></span>
-                <span>P90 Downside Cap: <strong>${Math.round(result.contract_strategy?.p90_cost || 0).toLocaleString()}</strong></span>
-                <span>Flexibility Score: <strong>{(result.contract_strategy?.flexibility_score * 100).toFixed(0)}/100</strong></span>
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                {result.contract_strategy?.reasons?.map((r, idx) => (
-                  <li key={idx} style={{ display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ color: 'var(--accent-secondary)' }}>✓</span>
-                    <span>{r}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* =====================================================================
-              SECTION 10: EXPLAINABILITY ("WHY CHARTERAI RECOMMENDS THIS PLAN")
+              EXPLAINABILITY SECTION
               ===================================================================== */}
           <div className="card" id="explainability-section" style={{ borderLeft: '4px solid var(--accent-primary)', backgroundColor: 'rgba(49, 130, 206, 0.02)' }}>
             <div className="card-header">
               <h2 className="card-title" style={{ color: 'var(--accent-primary)' }}>
                 <BrainCircuit size={20} />
-                10. Explainability: Why CharterAI Recommends This Plan
+                Why DockInsights Recommends This Plan
               </h2>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 Transparent Decision Reasoning & Audited Tradeoffs
@@ -1097,7 +950,7 @@ export default function VoyagePlanner() {
             <div className="card-header">
               <h2 className="card-title">
                 <Sliders size={20} color="var(--accent-primary)" />
-                11. Interactive Scenario Sensitivity Analysis
+                Sensitivity Analysis
               </h2>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button 

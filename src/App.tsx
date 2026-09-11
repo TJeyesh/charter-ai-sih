@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
-import { 
-  Ship, Anchor, TrendingUp, AlertTriangle, FileText, 
-  Settings, LayoutDashboard, Search, ShipWheel
-} from 'lucide-react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Ship, AlertTriangle, LayoutDashboard } from 'lucide-react';
+import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import VoyagePlanner from './pages/VoyagePlanner';
 import { getHealth } from './api';
 
@@ -24,12 +21,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Voyage Planner', path: '/voyage-planner', icon: ShipWheel },
-    { name: 'Freight Forecast', path: '/forecast', icon: TrendingUp },
-    { name: 'Vessel Optimizer', path: '/optimizer', icon: Ship },
-    { name: 'Port Intelligence', path: '/ports', icon: Anchor },
-    { name: 'Risk Center', path: '/risk', icon: AlertTriangle },
-    { name: 'Contract Strategy', path: '/contracts', icon: FileText },
   ];
 
   return (
@@ -38,7 +29,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <Ship className="logo-icon" size={24} />
-            CharterAI
+            DockInsights
           </div>
         </div>
         <nav className="sidebar-nav">
@@ -62,11 +53,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="main-content">
         <header className="top-header">
           <div className="page-title">
-            {navItems.find(item => item.path === location.pathname)?.name || 'CharterAI'}
+            {navItems.find(item => item.path === location.pathname)?.name || 'DockInsights'}
           </div>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', color: 'var(--text-secondary)' }}>
-            <Search size={20} />
-            <Settings size={20} />
             <div style={{ width: 32, height: 32, borderRadius: '50%', backgroundColor: 'var(--accent-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
               JD
             </div>
@@ -94,12 +83,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<VoyagePlanner />} />
-          <Route path="/voyage-planner" element={<VoyagePlanner />} />
-          <Route path="/forecast" element={<div>Forecast Module</div>} />
-          <Route path="/optimizer" element={<div>Optimizer Module</div>} />
-          <Route path="/ports" element={<div>Ports Module</div>} />
-          <Route path="/risk" element={<div>Risk Module</div>} />
-          <Route path="/contracts" element={<div>Contracts Module</div>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
     </BrowserRouter>

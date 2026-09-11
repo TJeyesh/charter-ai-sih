@@ -565,7 +565,7 @@ async function start() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`CharterAI Server listening on http://0.0.0.0:${PORT}`);
+    console.log(`DockInsights Server listening on http://0.0.0.0:${PORT}`);
   });
 }
 
